@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 lcalc.py is a line oriented calculator
 
@@ -7,8 +7,10 @@ Usage:
 """
 
 from __future__ import division
+from functools import reduce
 import argparse
 import sys
+from decimal import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument('operator', nargs=1, choices=['+', '-', '*', '/'],
@@ -27,12 +29,12 @@ def num(s):
     try:
         return int(s)
     except ValueError:
-        return float(s)
+        return Decimal(s)
 
 try:
     operands = [num(line.strip()) for line in sys.stdin]
-except ValueError, e:
+except ValueError as e:
     sys.stderr.write("Problem parsing input. %s\n" % e) 
     sys.exit(-1)
 
-print reduce(operator_map[args.operator[0]], operands)
+print(reduce(operator_map[args.operator[0]], operands))
